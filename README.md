@@ -1,4 +1,10 @@
-아르바이트 다녀왔다는 핑계로 아무것도 제대로 못함 ㅠ
+어휴 코드 한줄도 못쓰고 시간만 흘려보냈네 아까워라
+public void main{
+	public static void main(String args[]){
+ 		String[] mungsangImages = int[9];
+   	return mungsangImages;
+    }
+}
 ## 1. 멍상이 만드는 밸류
 - 몰입력 회복
 - 창의력 발휘
