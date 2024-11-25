@@ -29,5 +29,21 @@ public class TimerServiceTest {
     Assertions.assertTrue(timerService.getActiveTimers().containsKey(userName));
   }
 
+  @DisplayName("사용자가 타이머를 종료하면 activeTimers에서 제거되고, 경과시간을 반환한다")
+  @Test
+  void stopTOmer_shouldRemoveFromActiveTimersAndReturnDuration() throws InterruptedException {
+    // given
+    String userName = "어차피 망할 레거시";
+    timerService.startTimer(userName);
+    long initialTime = System.currentTimeMillis();
+
+    // (Optional) 타이머 실행 후 1초 대기
+    Thread.sleep(1000);
+    // when
+    timerService.stopTimer(userName);
+
+    // then
+  }
+
 
 }

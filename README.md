@@ -7,6 +7,9 @@
   2. 랭킹 API 구현 → 정렬/집계 쿼리 작성 → 랭킹 결과 테스트
   3. 기본 UI 연결 (타이머 페이지) → API 연동 및 동작 테스트
   4. 간단한 배포 환경 설정 → 사용자 피드백 수집
+  5. 아키텍처 구조
+  6. Client (HTML/JS/CSS) -> REST API (Spring Boot) -> Database (H2/SQLite)
+
 
 ### MVP 테스트 플로우
 - API 테스트: Postman 또는 Swagger로 /start-timer, /stop-timer, /rankings 테스트.
