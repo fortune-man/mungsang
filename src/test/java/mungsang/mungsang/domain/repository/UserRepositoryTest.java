@@ -18,7 +18,7 @@ class UserRepositoryTest {
 
   @DisplayName("회원 저장 테스트")
   @Test
-  public testSaveUser{
+  void testSaveUser() {
     //given
     User user = new User();
     user.setName("김주형");
