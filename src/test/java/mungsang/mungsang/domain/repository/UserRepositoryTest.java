@@ -2,6 +2,7 @@ package mungsang.mungsang.domain.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Optional;
 import mungsang.mungsang.domain.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,23 @@ class UserRepositoryTest {
     assertNotNull(savedUser.getId());
     assertEquals("김주형", savedUser.getName());
     assertEquals("wnguddl96@naver.com", savedUser.getEmaiL());
+  }
+
+  @DisplayName("id 조회")
+  @Test
+  void testFindById(){
+    //given
+    User user = new User();
+    user.setName("회원 조회");
+    user.setEmail("wnguddl96@naver.com");
+    user = userRepository.save(user);
+
+    //when
+    Optional<User> foundUser = userRepository.findById(user.getId());
+
+    //then
+    assertTrue(foundUser.isPresent());
+    assertEquals("회원 조회", foundUser.get().getName());
   }
 
 }
