@@ -12,7 +12,4 @@ public class UserService {
   public UserResponse getUser(Long id) {
     return userRepository.findById(id)
         .map(UserRepository::fromEntity)
-        .orElseThrow(() -> new NotFoundException("조회 되지 않는 회원입니다."));
-  }
-
-}
+        .orElseThrow(() -> new NotFoundException(
