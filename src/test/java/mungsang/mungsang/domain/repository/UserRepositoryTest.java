@@ -50,3 +50,4 @@ class UserRepositoryTest {
     assertEquals("회원 조회", foundUser.get().getName());
   }
 
+}
