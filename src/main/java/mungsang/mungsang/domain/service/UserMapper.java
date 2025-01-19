@@ -15,5 +15,4 @@ public class UserMapper {
     entity.setEmail(user.getEmail());
     return entity;
   }
-
 }

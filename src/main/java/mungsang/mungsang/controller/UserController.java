@@ -1,6 +1,7 @@
 package mungsang.mungsang.controller;
 
 import mungsang.mungsang.domain.entity.User;
+import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
 import mungsang.mungsang.domain.service.UserMapper;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,21 @@ public class UserController {
   private final UserRepository userRepository;
 
   public UserController(UserRepository userRepository) {
+
     this.userRepository = userRepository;
   }
 
   @PostMapping
   public ResponseEntity<User> createUser(@RequestBody User user) {
-    User savedUser = userRepository.save(user);
+    // 도메인 객체 -> 엔티티 변환
+    UserEntity userEntity = UserMapper.toEntity(user);
+    UserEntity savedEntity = userRepository.save(userEntity);
+
+    // 엔티티 -> 도메인 객체 반환
+    User savedUser = UserMapper.toDomain(savedEntity);
     return ResponseEntity.ok(savedUser);
   }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -34,5 +42,4 @@ public class UserController {
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }
-
 }

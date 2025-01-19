@@ -23,7 +23,7 @@ public class ApplicationIntegerationTest {
   void testFullFlow() {
     mockMvc.perform(post("/users"))
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\": \"Integration User\", \"email\": \"integration@example.com\"}"))
+        .content("{\"name\": \"Integration User\", \"email\": \"integration@example.com\"}"));
     .andExpect(status().isOk())
         .andExpect(jsonPath("$.name").value("Integration User"));
 

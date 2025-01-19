@@ -8,39 +8,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import mungsang.mungsang.domain.entity.User;
+import mungsang.mungsang.domain.entity.UserEntity;
+import mungsang.mungsang.domain.repository.UserRepository;
 import mungsang.mungsang.domain.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Mock
+  private UserRepository userRepository;
 
-  @MockBean
+  @InjectMocks
   private UserService userService;
 
   @Test
   void testCreateUser() throws Exception {
-    // given
-    User user = new User();
-    user.setName("API user");
-    user.setEmail("api@example.com");
-    when(userService.createUser(any(User.class))).thenReturn(user);
+    UserEntity userEntity = new UserEntity();
+    userEntity.setUsername("김주형");
+    userEntity.setEmail("wnguddl96@naver.com");
 
-    // when
-    mockMvc.perform(post("/users"))
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"name\": \"API User\", \"email\": \"api@example.com\"}")
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.name").valie("API User"))
-        .andExpect(jsonPath("$.email").value("api@example.com"));
+    when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
-    // then
+    User createdUser = userService.createUser("김주형", "wnguddl96@naver.com");
+
+    assertNotNull(createdUser);
+    assertEquals("김주형", createdUser.getName());
+    assertEquals("wnguddl96@naver.com", createdUser.getEmail());
   }
 }
