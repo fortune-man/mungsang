@@ -1,44 +1,29 @@
-## Known Issues
+현재 반복 중인 문제들
+### known issue
+- 포트폴리오 완성을 위해 도메인 설계 - 엔티티 설계와 테이블 설계 - orm으로 매핑 - 로직 개발 - 전체 테스트 완료 - 배포 순서로 일정 진행하려고 계획했으나
+- 전체 테스트 과정에서 데이터베이스 연동 문제로 일정 지연 중. gpt는 mysql 서비스 시작을 안내하지만 하기 문제들이 반복중
+- - mysql 데이터디텍토리 초기화 반복 문제
+- 임시비밀번호 미생성됨
+- mysql 서비스상태 불안정으로 테스트 작업 지연
+#### 시도해본 것들
 
-### 1. MySQL 서버 실행 및 접속 문제
-#### 발생 상황
-- MySQL 서버는 실행되지만 `root` 계정으로 접속 불가.
-- 초기화 단계에서 임시 비밀번호가 로그에 출력되지 않음.
-
-#### 원인
-- MySQL 초기화 과정에서 임시 비밀번호 출력 누락.
-- 초기 비밀번호 설정 및 계정 관리 미흡.
-
-#### 해결 방법
-1. MySQL 초기화 후 반드시 로그 파일 확인:
-   ```bash
-   cat /path/to/mysql/error.log | grep 'temporary password'
-
-2.	임시 비밀번호가 없을 경우 비밀번호 강제 재설정:
-```bash
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'YourNewPassword!';
-FLUSH PRIVILEGES;
-```
-3.	MySQL 서버 재시작 및 접속 테스트:
-```bash
-brew services restart mysql
-mysql -u root -p
-```
-
----
-
-재발 방지 대안
-•	초기화 단계에서 로그 파일 확인 및 비밀번호 재설정 절차 준수.
-•	프로젝트 초기 설정에 MySQL 관련 주요 절차 추가.
-
-```bash
----
-
-### **5. 다음 작업**
-- README 업데이트 후 Git에 커밋:
-```bash
-git add README.md
-git commit -m "Update README with MySQL blocking issue and resolution steps"
-git push
- ```
-•	개선된 절차를 적용하여 다시 테스트.
+pkill -9 mysqld
+✘ joohyeongkim@gimjuhyeong-ui-MacBookAir  ~/Desktop/dontpanic/mungsang   main ±  brew services list
+Name                  Status  User         File
+emacs                 none                 
+mongodb-community@5.0 none                 
+mysql                 stopped joohyeongkim ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+unbound               none                 
+joohyeongkim@gimjuhyeong-ui-MacBookAir  ~/Desktop/dontpanic/mungsang   main ±  sudo rm -rf /opt/homebrew/var/mysql/*
+Password:
+Sorry, try again.
+Password:
+joohyeongkim@gimjuhyeong-ui-MacBookAir  ~/Desktop/dontpanic/mungsang   main ±  sudo chown -R `whoami`:staff /opt/homebrew/var/mysql
+joohyeongkim@gimjuhyeong-ui-MacBookAir  ~/Desktop/dontpanic/mungsang   main ±  sudo chmod -R 755 /opt/homebrew/var/mysql
+joohyeongkim@gimjuhyeong-ui-MacBookAir  ~/Desktop/dontpanic/mungsang   main ±  mysqld --initialize --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/opt/homebrew/var/mysql --tmpdir=/tmp
+2025-01-19T01:42:30.723724Z 0 [System] [MY-015017] [Server] MySQL Server Initialization - start.
+2025-01-19T01:42:30.725205Z 0 [System] [MY-013169] [Server] /opt/homebrew/Cellar/mysql/9.1.0_1/bin/mysqld (mysqld 9.1.0) initializing of server in progress as process 2296
+2025-01-19T01:42:30.726535Z 0 [ERROR] [MY-010457] [Server] --initialize specified but the data directory has files in it. Aborting.
+2025-01-19T01:42:30.726540Z 0 [ERROR] [MY-013236] [Server] The designated data directory /opt/homebrew/var/mysql/ is unusable. You can remove all files that the server added to it.
+2025-01-19T01:42:30.726574Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-01-19T01:42:30.727617Z 0 [System] [MY-015018] [Server] MySQL Server Initialization - end.

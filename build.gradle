@@ -30,6 +30,7 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'       // H2 for testing
 	implementation 'mysql:mysql-connector-java' // MySQL for production
 
+
 	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
