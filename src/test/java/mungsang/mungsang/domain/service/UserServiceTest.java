@@ -1,9 +1,13 @@
 package mungsang.mungsang.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import mungsang.mungsang.domain.entity.User;
+import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,21 +23,20 @@ class UserServiceTest {
   @InjectMocks
   private UserService userService;
 
+  @DisplayName("사용자 생성")
   @Test
   void testCreateUser() {
-    //given
-    User user = new User();
-    user.setName("Mock User");
-    user.setEmail("mock@example.com");
-    when(userRepository.save(any(User.class))).thenReturn(user);
+    UserEntity userEntity = new UserEntity();
+    userEntity.setUsername("김주형");
+    userEntity.setEmail("wnguddl96@naver.com");
 
-    //when
-    User createdUser = userService.createUser(user);
+    when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
-    //then
-    verify(userRepository, times(1)).save(any(User.class));
-    assertEquals("Mock User", createdUser.getName());
-    assertEquals("mock@example.com", createdUser.getEmail());
+    User createdUser = userService.createUser("김주형", "wnguddl96@naver.com");
+
+    assertNotNull(createdUser);
+    assertEquals("김주형", createdUser.getName());
+    assertEquals("wnguddl96@naver.com", createdUser.getEmail());
   }
 
 }

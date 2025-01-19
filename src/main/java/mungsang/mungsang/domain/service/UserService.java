@@ -21,9 +21,10 @@ public class UserService {
     UserEntity userEntity = new UserEntity();
     userEntity.setUsername(name);
     userEntity.setEmail(email);
+
     UserEntity savedEntity = userRepository.save(userEntity);
 
-    return UserRepository.fromEntity(savedEntity);
+    return new User(savedEntity.getId(), savedEntity.getUsername(), savedEntity.getEmail());
   }
 
   // 사용자 조회

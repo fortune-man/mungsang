@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 // jpa와 연결된 userentity 처리, 필요시 DTO로 변환
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
   // 이메일로 사용자 찾기
-  Optional<User> findByEmail(String email);
+  Optional<UserEntity> findByEmail(String email);
 
   // UserEntity를 User로 변환하는 유틸
   static User fromEntity(UserEntity entity) {
