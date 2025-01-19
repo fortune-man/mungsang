@@ -24,6 +24,10 @@ public class UserService {
 
     UserEntity savedEntity = userRepository.save(userEntity);
 
+    return toUser(savedEntity);
+  }
+
+  private User toUser(UserEntity savedEntity) {
     return new User(savedEntity.getId(), savedEntity.getUsername(), savedEntity.getEmail());
   }
 
