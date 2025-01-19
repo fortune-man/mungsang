@@ -4,6 +4,7 @@ import mungsang.mungsang.domain.dto.UserResponse;
 import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
+import mungsang.mungsang.exception.ErrorCode;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +35,17 @@ public class UserService {
   public User getUserById(Long id) {
     return userRepository.findById(id)
         .map(UserRepository::fromEntity)
-        .orElseThrow(() -> new NotFoundException("조회되지 않는 회원입니다."));
+        .orElseThrow(() -> getNotFoundException());
+  }
+
+  private static mungsang.mungsang.exception.NotFoundException getNotFoundException() {
+    return new mungsang.mungsang.exception.NotFoundException(ErrorCode.USER_NOT_FOUND);
   }
 
   // 사용자 변경
   public User updateUser(Long id, String name, String email) {
     UserEntity userEntity = userRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("조회되지 않는 회원입니다."));
+        .orElseThrow(() -> getNotFoundException());
 
     userEntity.setUsername(name);
     userEntity.setEmail(email);
@@ -52,7 +57,7 @@ public class UserService {
   // 사용자 삭제
   public void deleteUser(Long id) {
     UserEntity userEntity = userRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("조회되지 않는 회원입니다."));
+        .orElseThrow(() -> getNotFoundException());
 
     userRepository.delete(userEntity);
   }
