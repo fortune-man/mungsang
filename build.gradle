@@ -28,7 +28,7 @@ dependencies {
 
 	// Database dependencies
 	runtimeOnly 'com.h2database:h2'       // H2 for testing
-	implementation 'mysql:mysql-connector-java' // MySQL for production
+	implementation 'mysql:mysql-connector-java:8.0.33' // 최신 버전
 
 
 	// Test dependencies
