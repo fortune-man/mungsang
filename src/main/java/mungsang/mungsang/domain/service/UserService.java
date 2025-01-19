@@ -23,7 +23,6 @@ public class UserService {
     userEntity.setEmail(email);
 
     UserEntity savedEntity = userRepository.save(userEntity);
-
     return toUser(savedEntity);
   }
 
