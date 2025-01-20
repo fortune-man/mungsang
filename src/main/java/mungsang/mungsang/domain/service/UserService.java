@@ -1,11 +1,12 @@
 package mungsang.mungsang.domain.service;
 
+import mungsang.mungsang.domain.dto.UserDto;
 import mungsang.mungsang.domain.dto.UserResponse;
 import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
 import mungsang.mungsang.exception.ErrorCode;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import mungsang.mungsang.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 // 핵심 비즈니스 로직 처리, UserRepository를 사용하여 데이터 접근 처리
@@ -18,15 +19,18 @@ public class UserService {
   }
 
   // 사용자 생성
-  public User createUser(String name, String email) {
+  public UserDto createUser(String name, String email) {
     UserEntity userEntity = new UserEntity();
     userEntity.setUsername(name);
     userEntity.setEmail(email);
 
     UserEntity savedEntity = userRepository.save(userEntity);
-    return toUser(savedEntity);
+
+    // 엔티티를 DTO로 변환
+    return UserMapper.toDto(savedEntity);
   }
 
+  // 사용자 조회
   private User toUser(UserEntity savedEntity) {
     return new User(savedEntity.getId(), savedEntity.getUsername(), savedEntity.getEmail());
   }
@@ -35,29 +39,27 @@ public class UserService {
   public User getUserById(Long id) {
     return userRepository.findById(id)
         .map(UserRepository::fromEntity)
-        .orElseThrow(() -> getNotFoundException());
+        .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
   }
 
-  private static mungsang.mungsang.exception.NotFoundException getNotFoundException() {
-    return new mungsang.mungsang.exception.NotFoundException(ErrorCode.USER_NOT_FOUND);
-  }
 
   // 사용자 변경
-  public User updateUser(Long id, String name, String email) {
+  public UserDto updateUser(Long id, String name, String email) {
     UserEntity userEntity = userRepository.findById(id)
-        .orElseThrow(() -> getNotFoundException());
+        .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
     userEntity.setUsername(name);
     userEntity.setEmail(email);
+
     UserEntity updatedEntity = userRepository.save(userEntity);
 
-    return UserRepository.fromEntity(updatedEntity);
+    return UserMapper.toDto(updatedEntity);
   }
 
   // 사용자 삭제
   public void deleteUser(Long id) {
     UserEntity userEntity = userRepository.findById(id)
-        .orElseThrow(() -> getNotFoundException());
+        .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
     userRepository.delete(userEntity);
   }
