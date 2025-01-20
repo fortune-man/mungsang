@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import mungsang.mungsang.domain.dto.UserDto;
 import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
@@ -12,30 +13,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+
 class UserServiceTest {
 
-  @Mock
-  private UserRepository userRepository;
-
-  @InjectMocks
-  private UserService userService;
-
-  @DisplayName("사용자 생성")
+  @DisplayName("서비스 사용자 생성 테스트")
   @Test
   void testCreateUser() {
-    UserEntity userEntity = new UserEntity();
-    userEntity.setUsername("김주형");
-    userEntity.setEmail("wnguddl96@naver.com");
+    UserRepository userRepository = Mockito.mock(UserRepository.class);
+    UserService userService = new UserService(userRepository);
 
-    when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+    UserEntity mockEntity = new UserEntity(1L, "김주형", "wnguddl96@naver.com");
+    Mockito.when(userRepository.save(any(UserEntity.class))).thenReturn(mockEntity);
 
-    User createdUser = userService.createUser("김주형", "wnguddl96@naver.com");
+    UserDto createdUser = userService.createUser("김주형", "wnguddl96@naver.com");
 
-    assertNotNull(createdUser);
-    assertEquals("김주형", createdUser.getName());
+    assertEquals("김주형", createdUser.getUsername());
     assertEquals("wnguddl96@naver.com", createdUser.getEmail());
   }
 
