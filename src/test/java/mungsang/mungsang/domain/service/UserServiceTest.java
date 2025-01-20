@@ -5,16 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import mungsang.mungsang.domain.dto.UserDto;
-import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 
 class UserServiceTest {

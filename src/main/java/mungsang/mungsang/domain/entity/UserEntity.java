@@ -1,5 +1,6 @@
 package mungsang.mungsang.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,7 +12,9 @@ public class UserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(nullable = false)
   private String username;
+  @Column(nullable = false, unique = true)
   private String email;
 
 

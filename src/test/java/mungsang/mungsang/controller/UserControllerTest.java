@@ -21,6 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,18 +30,25 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
+  @Mock
+  private UserService userService;
+
+  @InjectMocks
+  private UserController userController;
+
   @Test
   @DisplayName("컨트롤러 사용자 생성 테스트")
-  void testCreateUser() {
-    UserService userService = Mockito.mock(UserService.class);
-    UserController userController = new UserController(userService);
-
+  void testCreateUser() throws Exception {
     UserDto mockUserDto = new UserDto(1L, "김주형", "wnguddl96@naver.com");
+
+    // Mock 동작 정의
     when(userService.createUser("김주형", "wnguddl96@naver.com")).thenReturn(mockUserDto);
 
     ResponseEntity<UserDto> response = userController.createUser(
-        new User(1L, "김주형", "wnguddl96@naver.com"));
+        new User(1L, "김주형", "wnguddl96@naver.com")
+    );
 
+    // then
     assertEquals(200, response.getStatusCodeValue());
     assertEquals("김주형", response.getBody().getUsername());
     assertEquals("wnguddl96@naver.com", response.getBody().getEmail());
