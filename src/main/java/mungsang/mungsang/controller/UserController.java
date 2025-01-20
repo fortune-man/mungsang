@@ -1,9 +1,11 @@
 package mungsang.mungsang.controller;
 
+import mungsang.mungsang.domain.dto.UserDto;
 import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
 import mungsang.mungsang.domain.service.UserMapper;
+import mungsang.mungsang.domain.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,30 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-  private final UserRepository userRepository;
+  private final UserService userService;
 
-  public UserController(UserRepository userRepository) {
-
-    this.userRepository = userRepository;
+  public UserController(UserService userService) {
+    this.userService = userService;
   }
 
   @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody User user) {
-    // 도메인 객체 -> 엔티티 변환
-    UserEntity userEntity = UserMapper.toEntity(user);
-    UserEntity savedEntity = userRepository.save(userEntity);
-
-    // 엔티티 -> 도메인 객체 반환
-    User savedUser = UserMapper.toDomain(savedEntity);
-    return ResponseEntity.ok(savedUser);
+  public ResponseEntity<UserDto> createUser(@RequestBody User user) {
+    UserDto createdUser = userService.createUser(user.getName(), user.getEmail());
+    return ResponseEntity.ok(createdUser);
   }
 
 
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    return userRepository.findById(id)
-        .map(UserMapper::toDomain)
-        .map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build());
+  public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    UserDto user = userService.getUserById(id);
+    return ResponseEntity.ok(user);
   }
 }

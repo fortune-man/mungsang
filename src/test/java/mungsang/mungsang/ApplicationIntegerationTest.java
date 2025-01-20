@@ -24,13 +24,13 @@ class ApplicationIntegrationTest {
     // Create user
     mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\": \"Integration User\", \"email\": \"integration@example.com\"}"))
+            .content("{\"name\": \"김주형\", \"email\": \"wnguddl96@naver.com\"}"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.name").value("Integration User"));
+        .andExpect(jsonPath("$.name").value("김주형"));
 
     // Get user
     mockMvc.perform(get("/users/1"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.name").value("Integration User"));
+        .andExpect(jsonPath("$.name").value("김주형"));
   }
 }

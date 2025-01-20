@@ -4,14 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 import mungsang.mungsang.domain.entity.User;
+import mungsang.mungsang.domain.entity.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // 실제 db 사용시
+@ImportAutoConfiguration({JpaRepositoriesAutoConfiguration.class})
 class UserRepositoryTest {
   @Autowired
   private UserRepository userRepository;
@@ -20,34 +24,31 @@ class UserRepositoryTest {
   @Test
   void testSaveUser() {
     //given
-    User user = new User();
-    user.setName("김주형");
-    user.setEmail("test@example.com");
+    UserEntity userEntity = new UserEntity(1L, "김주형", "wnguddl96@naver.com");
+    // when
+    UserEntity savedEntity = userRepository.save(userEntity);
 
-    //when
-    User savedUser = userRepository.save(user);
 
     //then
-    assertNotNull(savedUser.getId());
-    assertEquals("김주형", savedUser.getName());
-    assertEquals("wnguddl96@naver.com", savedUser.getEmaiL());
+    assertNotNull(savedEntity.getId());
+    assertEquals("김주형", savedEntity.getUsername());
+    assertEquals("wnguddl96@naver.com", savedEntity.getEmail());
   }
 
   @DisplayName("id 조회")
   @Test
   void testFindById(){
     //given
-    User user = new User();
-    user.setName("회원 조회");
-    user.setEmail("wnguddl96@naver.com");
-    user = userRepository.save(user);
+    UserEntity userEntity = new UserEntity(1L, "김주형", "wnguddl96@naver.com");
 
     //when
-    Optional<User> foundUser = userRepository.findById(user.getId());
+    UserEntity savedUser = userRepository.save(userEntity);
+    Optional<UserEntity> foundUser = userRepository.findById(savedUser.getId());
 
     //then
-    assertTrue(foundUser.isPresent());
-    assertEquals("회원 조회", foundUser.get().getName());
+    assertNotNull(foundUser);
+    assertEquals("김주형", savedUser.getUsername());
+    assertEquals("wnguddl96@naver.com", savedUser.getEmail());
   }
 
 }

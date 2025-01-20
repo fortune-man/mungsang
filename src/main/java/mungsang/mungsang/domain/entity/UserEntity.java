@@ -3,6 +3,7 @@ package mungsang.mungsang.domain.entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 
 // DB와 직접 매핑되는 JPA 엔티티 역할
 public class UserEntity {
@@ -14,8 +15,16 @@ public class UserEntity {
   private String email;
 
 
-  // JPA에서 필요한 기본 생성자
+
+  // 기본 생성자
   public UserEntity() {}
+
+  // 매개변수 생성자
+  public UserEntity(Long id, String username, String email) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+  }
 
   public Long getId() {
     return id;
@@ -40,4 +49,5 @@ public class UserEntity {
   public void setEmail(String email) {
     this.email = email;
   }
+
 }
