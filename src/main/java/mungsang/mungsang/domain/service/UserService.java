@@ -36,7 +36,8 @@ public class UserService {
   }
 
   // 사용자 조회
-  public User getUserById(Long id) {
+  public UserDto getUserById(Long id) {
+    // request 본문에서 받은 user를 userDto로 return
     return userRepository.findById(id)
         .map(UserRepository::fromEntity)
         .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));

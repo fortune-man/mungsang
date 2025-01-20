@@ -26,7 +26,9 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<UserDto> createUser(@RequestBody User user) {
-    UserDto createdUser = userService.createUser(user.getName(), user.getEmail());
+    // 요청 본문에서 받은 user를 userDto로 변환
+    UserDto userDto = new UserDto(1L, user.getName(), user.getEmail());
+    UserDto createdUser = userService.createUser(userDto.getUsername(), userDto.getEmail());
     return ResponseEntity.ok(createdUser);
   }
 
