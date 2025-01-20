@@ -39,7 +39,7 @@ public class UserService {
   public UserDto getUserById(Long id) {
     // request 본문에서 받은 user를 userDto로 return
     return userRepository.findById(id)
-        .map(UserRepository::fromEntity)
+        .map(UserMapper::toDto)
         .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
   }
 

@@ -2,10 +2,12 @@ package mungsang.mungsang.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import mungsang.mungsang.domain.dto.UserDto;
 import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.UserDataHandler;
 
 class UserMapperTest {
 
@@ -18,11 +20,11 @@ class UserMapperTest {
     entity.setUsername("김주형");
     entity.setEmail("wnguddl96@naver.com");
 
-    User user = UserMapper.toDomain(entity);
+    UserDto userDto = UserMapper.toDto(entity);
 
-    assertEquals(entity.getId(), user.getId());
-    assertEquals(entity.getUsername(), user.getName());
-    assertEquals(entity.getEmail(), user.getEmail());
+    assertEquals(entity.getId(), userDto.getId());
+    assertEquals(entity.getUsername(), userDto.getUsername());
+    assertEquals(entity.getEmail(), userDto.getEmail());
   }
 
 }
