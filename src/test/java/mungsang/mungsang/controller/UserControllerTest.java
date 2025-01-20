@@ -12,6 +12,7 @@ import mungsang.mungsang.domain.entity.User;
 import mungsang.mungsang.domain.entity.UserEntity;
 import mungsang.mungsang.domain.repository.UserRepository;
 import mungsang.mungsang.domain.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,20 +22,27 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class UserControllerTest {
+
+
+  @InjectMocks
+  private UserController userController;
 
   @Mock
   private UserService userService;
 
-  @InjectMocks
-  private UserController userController;
+  @BeforeEach
+  void setUp() {
+    userController = new UserController(userService);
+  }
 
   @Test
   @DisplayName("컨트롤러 사용자 생성 테스트")
@@ -45,7 +53,7 @@ class UserControllerTest {
     when(userService.createUser("김주형", "wnguddl96@naver.com")).thenReturn(mockUserDto);
 
     ResponseEntity<UserDto> response = userController.createUser(
-        new User(1L, "김주형", "wnguddl96@naver.com")
+        new User(null, "김주형", "wnguddl96@naver.com")
     );
 
     // then
