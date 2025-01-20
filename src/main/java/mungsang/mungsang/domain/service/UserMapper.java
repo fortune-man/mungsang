@@ -6,12 +6,15 @@ import mungsang.mungsang.domain.entity.UserEntity;
 
 public class UserMapper {
 
-  // User -> UserEntity
-  public static UserEntity toEntity(User user) {
-    return new UserEntity(user.getId(), user.getName(), user.getEmail());
-  }
-
+  // userEntity -> userDto
   public static UserDto toDto(UserEntity userEntity) {
     return new UserDto(userEntity.getId(), userEntity.getUsername(), userEntity.getEmail());
   }
+
+  // userDto -> userEntity
+  public static UserEntity toEntity(UserDto userDto) {
+    return new UserEntity(userDto.getId(), userDto.getUsername(), userDto.getEmail());
+  }
+
+
 }
